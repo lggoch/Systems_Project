@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package stochastic;
+
+
+service SGD{
+	// A joining client tells the server that he is ready to compute
+	// the Server respond with a computation task if it is okay.
+	//rpc Ready(ReadyRequest) returns (ComputeTask) {}
+	//rpc DimUpdate(Update) returns (NextInstruction) {}
+	rpc ComputeTask(LWB) returns (Update) {}
+
+}
+
+message LWB{
+	int32 labels = 1;
+	repeated float weights = 2;
+	map<int32, float> batch = 3;
+	float corr_1 = 4;
+	float corr_2 = 5;
+	float lambda_ = 6;
+}
+
+message Update{
+	map<int32,float> grad_up = 1;
+}
