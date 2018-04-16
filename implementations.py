@@ -110,7 +110,3 @@ def inbalance(labels):
     corr_1 = (0.5*size)/c[-1]
     corr_2= (0.5*size)/c[1]
     return (corr_1, corr_2)
-
-def test(input_, q,j):
-    res = stub1.ComputeTask(input_)
-    q.put(dict(res.grad_up))

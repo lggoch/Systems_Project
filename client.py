@@ -9,6 +9,10 @@ import operator
 import threading as th
 import queue
 
+def compute_result(input_, q,j):
+    res = stub1.ComputeTask(input_)
+    q.put(dict(res.grad_up))
+
 # Reading of the files 
 print('Reading the files')
 file1 = open("../lyrl2004_vectors_test_pt0.dat")
@@ -90,7 +94,7 @@ for i in range(max_iter):
         batch = x_train[rd]
         lab = y_train[rd]
         args_ = (sgd_pb2.LWB(labels=lab, weights=weights, batch=batch, corr_1=c1, corr_2=c2, lambda_= lambda_),q,j)
-        t = th.Thread(target=test, args=args_)
+        t = th.Thread(target=compute_result, args=args_)
         threads.append(t)
         t.start()
     for j in range(worker):
