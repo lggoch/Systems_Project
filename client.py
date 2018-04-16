@@ -8,6 +8,7 @@ from collections import Counter
 import operator
 import threading as th
 import queue
+from tqdm import tqdm
 
 def compute_result(input_, q,j):
     res = stub1.ComputeTask(input_)
@@ -86,7 +87,7 @@ lambda_ = 0.001
 
 print('Starting SGD...')
 # Performs the SVM using SGD
-for i in range(max_iter):
+for i in tqdm(range(max_iter)):
     results = []
     threads = []
     for j in range(worker):
