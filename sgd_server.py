@@ -1,13 +1,10 @@
 from concurrent import futures
 import time
-
 import grpc
 import sgd_pb2_grpc
 import sgd_pb2
 import sys
 import numpy as np
-#def compute_gradient(y, X, w):
-from concurrent import futures
 
 
 
@@ -16,6 +13,16 @@ _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 
 def compute_grad(y, X, w,c1,c2, lambda_):
+	'''
+	Compute the gradient of a sample with penalized loss for inbalanced input data.
+	:param y: the label of the sample
+	:param X: the sample as a dict
+	:param w: the weight vector
+	:param c1: the penalization for positive label
+	:param c2: the penalization for negative label
+	:param lambda_: the regularizer
+	:return: the gradient as a dictionaries of non null entries
+	'''
 	def is_support(y_n, x_n, w):
 		return y_n*sum([x_n[x]*w[x] for x in x_n])<1
 	res = X.copy()
@@ -36,6 +43,9 @@ def compute_grad(y, X, w,c1,c2, lambda_):
 class SGDServicer(sgd_pb2_grpc.SGDServicer):
 
 	def ComputeTask(self, request, context):
+		'''
+		Receive the data necessary to compute the gradient update and returns the updated dimensions
+		'''
 		labels = request.labels
 		weights = request.weights
 		batch = request.batch
@@ -47,6 +57,10 @@ class SGDServicer(sgd_pb2_grpc.SGDServicer):
 
 
 def serve(port):
+	'''
+	Initialize the server on port "port"
+
+	'''
 	max_workers = 20
 	print("Connecting to port", port)
 	print("Number of workers", max_workers)

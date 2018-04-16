@@ -4,14 +4,12 @@ package stochastic;
 
 
 service SGD{
-	// A joining client tells the server that he is ready to compute
-	// the Server respond with a computation task if it is okay.
-	//rpc Ready(ReadyRequest) returns (ComputeTask) {}
-	//rpc DimUpdate(Update) returns (NextInstruction) {}
+	// the client send the data to a server to compute a gradient step
 	rpc ComputeTask(LWB) returns (Update) {}
 
 }
 
+// the parameters necessary to compute the gradient
 message LWB{
 	int32 labels = 1;
 	repeated float weights = 2;
@@ -21,6 +19,7 @@ message LWB{
 	float lambda_ = 6;
 }
 
+// the gradient of the non-null dimensions
 message Update{
 	map<int32,float> grad_up = 1;
 }
