@@ -1,2 +1,3 @@
-# Systems_Project
-Project for Systems for Data Science course
+Oussama Abouzaïd
+Henry Decléty
+Lucas Gauchoux
