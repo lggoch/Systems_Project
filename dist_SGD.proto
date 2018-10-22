@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package stochastic;
+
+service dist_SGD{
+	rpc Send_Weights(WS_Update) returns (ACK);
+	rpc Receive_Weights(WS_Update) returns (WS_Update);
+}
+
+message WS_Update{
+	map<int32, float> w_up = 1;
+}
+
+message ACK{
+	bool ack = 1;
+}

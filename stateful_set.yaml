@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  ports:
+  - port: 50051
+    name: web
+  clusterIP: None
+  selector:
+    app: nginx
+---
+
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: systems
+spec:
+  serviceName: "nginx"
+  podManagementPolicy: Parallel
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: worker
+          image: henrydeclety/worker
+          command:
+            - sleep
+            - infinity
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 50051
+            name: web
+          volumeMounts:
+          - name: data
+            mountPath: /worker/datasets
+          resources: 
+            limits: 
+              memory: "15Gi"
+              cpu: "500m"
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: cs449g3-scratch
